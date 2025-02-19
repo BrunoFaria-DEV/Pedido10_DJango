@@ -1,0 +1,91 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <!-- <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6> -->
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item">Clientes</li>
+                  <li class="breadcrumb-item">Novo</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-lg-6 col-5 text-right">
+              <a href="{% url 'clientes' %}" class="btn btn-sm btn-neutral">Voltar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row justify-content-center">
+          <div class="col-lg-6 col-md-8">
+              <div class="card bg-secondary shadow border-0">
+                  <div class="card-body px-lg-5 py-lg-5">
+                      <div class="text-center text-muted mb-4">
+                          <small>Novo Cliente</small>
+                      </div>
+                      <form role="form" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Name" type="text" name="nome">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Email" type="email" name="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-pin-3"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Address" type="text" name="endereco">
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-4">Create Client</button>
+                        </div>
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+
+{% endblock javascripts %}
