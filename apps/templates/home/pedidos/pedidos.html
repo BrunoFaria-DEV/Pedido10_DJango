@@ -1,0 +1,140 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <!-- <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6> -->
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item">Pedidos</li>
+                  <!-- <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Default</li> -->
+                </ol>
+              </nav>
+            </div>
+            <!-- <div class="col-lg-6 col-5 text-right">
+              <a href="#" class="btn btn-sm btn-neutral">Novo</a>
+            </div> -->
+          </div>
+          <div class="container-fluid d-flex align-items-center">
+            <div class="row">
+              <div class="col-10 col-md-12">
+                <h1 class="display-2 text-white"> 
+                  Pedidos
+                </h1>
+                <p class="text-white mt-0 mb-5">Exibe todos os pedidos cadastrados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Lista de pedidos</h3>
+                </div>
+                <div class="col text-right">
+                  <a href="{% url 'pedidos.create' %}" class="btn btn-sm btn-primary">Novo</a>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              {% if pedidos %}
+              <table class="table align-items-center table-flush">
+                  <thead class="thead-light">
+                      <tr>
+                          <th scope="col">Data do Pedido</th>
+                          <th scope="col">Produto</th>
+                          <th scope="col">Cliente</th>
+                          <th scope="col">Valor Total</th>
+                          <th scope="col">Forma de Pagamento</th>
+                          <th scope="col">Pago</th>
+                          <th scope="col">Status da Entrega</th>
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for pedido in pedidos %}
+                      <tr>
+                          <th scope="row">
+                              {{ pedido.DT_Pedido|date:"d/m/Y"|default:"Não cadastrado" }}
+                          </th>
+                          <td>
+                              {% if pedido.ID_Produto %}
+                                  <span class="mr-2">{{ pedido.ID_Produto.Nome_Produto }}</span>
+                                  <img src="{{ pedido.ID_Produto.Imagem.url }}" alt="{{ pedido.ID_Produto.Nome_Produto }}" style="max-width: 80px; max-height: 80px;">
+                              {% else %}
+                                  Não cadastrado
+                              {% endif %}
+                          </td>
+                          <td>
+                              {{ pedido.ID_Cliente.Nome|default:"Não cadastrado" }}
+                          </td>
+                          <td>
+                              R$ {{ pedido.VLR_Total_Pedido|floatformat:2|default:"Não cadastrado" }}
+                          </td>
+                          <td>
+                              {{ pedido.ID_FormaPGTO.Desc_Forma_PGTO|default:"Não cadastrado" }}
+                          </td>
+                          <td>
+                              {% if pedido.Pago == 'sim' %}Pago{% elif pedido.Pago == 'não' %}Em Aberto{% else %}Não cadastrado{% endif %}
+                          </td>
+                          <td>
+                              {% if pedido.Status_Pedido == 'sim' %}Entregue{% elif pedido.Status_Pedido == 'não' %}Não Entregue{% else %}Não cadastrado{% endif %}
+                          </td>
+                          <td>
+                              <a href="{% url 'pedidos.edit' pedido.id %}" class="btn btn-primary btn-sm">Editar</a>
+                          </td>
+                          <td>
+                              <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal"
+                                  data-delete-url="{% url 'pedidos.delete' pedido.id %}">
+                                  Excluir
+                              </button>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+              {% else %}
+              <div class="alert alert-warning">
+                  Nenhum pedido cadastrado.
+              </div>
+              {% endif %}
+          </div>
+          </div>
+        </div>
+      </div>
+      {% include "includes/alerts/confirm_delete.html" %}
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+
+{% endblock javascripts %}

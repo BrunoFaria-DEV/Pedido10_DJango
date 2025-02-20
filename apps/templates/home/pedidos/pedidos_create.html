@@ -1,0 +1,127 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <!-- <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6> -->
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item">Pedido</li>
+                  <li class="breadcrumb-item">Novo</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-lg-6 col-5 text-right">
+              <a href="{% url 'pedidos' %}" class="btn btn-sm btn-neutral">Voltar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row justify-content-center">
+          <div class="col-lg-6 col-md-8">
+              <div class="card bg-secondary shadow border-0">
+                  <div class="card-body px-lg-5 py-lg-5">
+                      <div class="text-center text-muted mb-4">
+                          <small>Novo Pedido</small>
+                      </div>
+                      <form role="form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_cliente">Cliente</label>
+                            <select class="form-control" name="id_cliente" id="id_cliente" required>
+                                {% for cliente in clientes %}
+                                    <option value="{{ cliente.id }}">{{ cliente.Nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_produto">Produto</label>
+                            <select class="form-control" name="id_produto" id="id_produto" required>
+                                {% for produto in produtos %}
+                                    <option value="{{ produto.id }}">{{ produto.Nome_Produto }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_formapgto">Forma de Pagamento</label>
+                            <select class="form-control" name="id_formapgto" id="id_formapgto" required>
+                                {% for forma in formas_pagamento %}
+                                    <option value="{{ forma.id }}">{{ forma.Desc_Forma_PGTO }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vlr_total_pedido">Valor Total do Pedido</label>
+                            <input class="form-control" placeholder="Valor Total do Pedido" type="number" name="vlr_total_pedido" step="0.01" min="0.01" data-max-digits="7" oninput="validateDigits(this)" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pago">Pago</label>
+                            <select class="form-control" name="pago" id="pago" required>
+                                <option value="sim">Pago</option>
+                                <option value="não">Em Aberto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status_pedido">Status do Pedido</label>
+                            <select class="form-control" name="status_pedido" id="status_pedido" required>
+                              <option value="sim">Entregue</option>
+                              <option value="não">Não Entregue</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dt_pedido">Data do Pedido</label>
+                            <input class="form-control" type="date" name="dt_pedido" required>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-4">Create Order</button>
+                        </div>
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  <script>
+      function validateDigits(input) {
+          const maxDigits = parseInt(input.dataset.maxDigits);
+          const value = input.value;
+          const parts = value.split('.');
+          const integerPart = parts[0];
+          const decimalPart = parts[1] || '';
+
+          if (integerPart.length + decimalPart.length > maxDigits) {
+              input.value = value.slice(0, maxDigits - decimalPart.length) + (decimalPart ? '.' + decimalPart : '');
+          }
+      }
+  </script>
+
+  <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+
+{% endblock javascripts %}

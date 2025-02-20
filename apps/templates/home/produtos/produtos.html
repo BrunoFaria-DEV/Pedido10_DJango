@@ -1,0 +1,128 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <!-- <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6> -->
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item">Produtos</li>
+                  <!-- <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Default</li> -->
+                </ol>
+              </nav>
+            </div>
+            <!-- <div class="col-lg-6 col-5 text-right">
+              <a href="#" class="btn btn-sm btn-neutral">Novo</a>
+            </div> -->
+          </div>
+          <div class="container-fluid d-flex align-items-center">
+            <div class="row">
+              <div class="col-10 col-md-12">
+                <h1 class="display-2 text-white"> 
+                  Produtos
+                </h1>
+                <p class="text-white mt-0 mb-5">Exibe todos os produtos cadastrados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Lista de produtos</h3>
+                </div>
+                <div class="col text-right">
+                  <a href="{% url 'produtos.create' %}" class="btn btn-sm btn-primary">Novo</a>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              {% if produtos %}
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descricao</th>
+                    <th scope="col">Preco</th>
+                    <th scope="col">Imagem</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for produto in produtos %}
+                    <tr>
+                      <th scope="row">
+                        {{ produto.Nome_Produto|default:"Não cadastrado" }}
+                      </th>
+                      <td>
+                        {{ produto.Descricao|default:"Não cadastrado" }}
+                      </td>
+                      <td>
+                        {{ produto.Preco|default:"Não cadastrado" }}
+                      </td>
+                      <td>
+                        {% if produto.Imagem %}
+                            <img src="{{ produto.Imagem.url }}" alt="{{ produto.Nome_Produto }}" style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            Não cadastrada
+                        {% endif %}
+                      </td>
+                      <td>
+                        <a href="{% url 'produtos.edit' produto.id %}" class="btn btn-primary btn-sm">Editar</a>
+                      </td>
+                      <td>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal"
+                            data-delete-url="{% url 'produtos.delete' produto.id %}">
+                            Excluir
+                        </button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% else %}
+                <div class="alert alert-warning">
+                  Nenhum produto cadastrado.
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% include "includes/alerts/confirm_delete.html" %}
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+
+{% endblock javascripts %}

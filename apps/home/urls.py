@@ -19,9 +19,18 @@ urlpatterns = [
     path('clientes/editar/<int:cliente_id>/', views.clientes_edit, name='clientes.edit'),
     path('clientes/deletar/<int:cliente_id>/', views.clientes_delete, name='clientes.delete'),
 
-    # path('produtos', views.produtos, name='produtos'),
-    # path('produtos/novo', views.produtos_create, name='produtos.create'),
-    # path('produtos/editar', views.produtos_edit, name='produtos.edit'),
-    # path('produtos/deletar', views.produtos_delete, name='produtos.delete'),
+    path('produtos', views.produtos, name='produtos'),
+    path('produtos/novo', views.produtos_create, name='produtos.create'),
+    path('produtos/editar/<int:produto_id>/', views.produtos_edit, name='produtos.edit'),
+    path('produtos/deletar/<int:produto_id>/', views.produtos_delete, name='produtos.delete'),
 
+    path('forma_pgtos', views.forma_pgtos, name='forma_pgtos'),
+    path('forma_pgtos/novo', views.forma_pgtos_create, name='forma_pgtos.create'),
+    path('forma_pgtos/editar/<int:forma_pgto_id>/', views.forma_pgtos_edit, name='forma_pgtos.edit'),
+    path('forma_pgtos/deletar/<int:forma_pgto_id>/', views.forma_pgtos_delete, name='forma_pgtos.delete'),
+
+    path('pedidos', views.pedidos, name='pedidos'),
+    path('pedidos/novo', views.pedidos_create, name='pedidos.create'),
+    path('pedidos/editar/<int:pedido_id>/', views.pedidos_edit, name='pedidos.edit'),
+    path('pedidos/deletar/<int:pedido_id>/', views.pedidos_delete, name='pedidos.delete'),
 ]
